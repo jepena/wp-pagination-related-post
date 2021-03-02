@@ -105,7 +105,7 @@ function j_inner_pagination(){
 * RELATED POST ON INNER PAGE 
 *
 */
-function related_post() {
+function j_related_post() {
     
     $args = array(
         'post_type'         => 'post',
@@ -152,4 +152,74 @@ function related_post() {
     wp_reset_postdata();
     
     
+}
+
+/* 
+* 
+* PAGINATION INNER PAGE OF POST WITH POST THUMBNAIL
+*
+*/
+function j_inner_pagination_thumbnail(){
+    $next_post = get_next_post();
+    $prev_post = get_previous_post();
+    
+    if ( $next_post || $prev_post ) {
+    
+    	$pagination_classes = '';
+    
+    	if ( ! $next_post ) {
+    		$pagination_classes = ' only-one only-prev';
+    	} elseif ( ! $prev_post ) {
+    		$pagination_classes = ' only-one only-next';
+    	}
+      ?>
+
+      
+    <div class="j_prev-post">
+      <?php
+      if ( $prev_post ) {
+        ?>
+        <a class="previous-post" href="<?php echo esc_url( get_permalink( $prev_post->ID ) ); ?>">
+            <?php if (has_post_thumbnail($prev_post->ID)): ?>
+                <div class="pagination-post-thumbnail">
+                  <span class="arrow pl-3 pr-1" aria-hidden="true"><i class="fas fa-chevron-left"></i></span>
+                  <span class="title px-2"><?php echo wp_kses_post( get_the_title( $prev_post->ID ) ); ?></span>
+                  <figure>  
+                    <?php echo get_the_post_thumbnail( $prev_post->ID, 'full' ); ?>
+                  </figure>
+                </div>
+              <?php else: ?>
+                <span class="arrow pr-1" aria-hidden="true"><i class="fas fa-chevron-left"></i></span>
+                <span class="title px-2"><?php echo wp_kses_post( get_the_title( $prev_post->ID ) ); ?></span>
+            <?php endif ?>
+        </a>
+        <?php
+      }
+    ?>
+    </div>
+      
+    <div class="j_next-post">
+    <?php
+      if ( $next_post ) {
+        ?>
+        <a class="next-post" href="<?php echo esc_url( get_permalink( $next_post->ID ) ); ?>">
+            <?php if (has_post_thumbnail($next_post->ID)): ?>
+                <div class="pagination-post-thumbnail">
+                  <figure>  
+                    <?php echo get_the_post_thumbnail( $next_post->ID, 'full' ); ?>
+                  </figure>
+                  <span class="title px-2"><?php echo wp_kses_post( get_the_title( $next_post->ID ) ); ?></span>
+                  <span class="arrow pl-1 pr-3" aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
+                </div>
+              <?php else: ?>
+                <span class="title px-2"><?php echo wp_kses_post( get_the_title( $next_post->ID ) ); ?></span>
+                <span class="arrow pl-1" aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
+          <?php endif ?>
+        </a>
+        <?php
+      }
+      ?>
+      </div>
+    	<?php
+    }
 }
